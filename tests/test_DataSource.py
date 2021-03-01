@@ -15,12 +15,13 @@ def test_should_fetch_data_for_given_time_series(data_src):
     example_time_series = "TEST.TIME.SERIES"
     example_country = "AFG"
 
-    result = data_src.fetch_data(example_country, example_time_series)
-    expected = {
-        'header': 'test_data',
-        'x_values': [2020, 2019, 2018],
-        'y_values': [1123, 2345, 556]
-    }
+    _, result = data_src.fetch_data(example_country, example_time_series)
+    expected = [{'date': '2004', 'value': 249791940700},
+                {'date': '2003', 'value': 221358563000},
+                {'date': '2002', 'value': 182162721300},
+                {'date': '2001', 'value': 1222756495400},
+                {'date': '1997', 'value': 1222916881118.13},
+                {'date': '1996', 'value': 221358563000}]
     assert result == expected
 
 
@@ -28,10 +29,20 @@ def test_should_fetch_data_for_given_country(data_src):
     example_time_series = "TEST.TIME.SERIES"
     example_country = "CHN"
 
-    result = data_src.fetch_data(example_country, example_time_series)
-    expected = {
-        'header': 'test_data',
-        'x_values': [2020, 2019, 2018],
-        'y_values': [122525, 464646, 35353]
-    }
+    _, result = data_src.fetch_data(example_country, example_time_series)
+    expected = [{'date': '1967', 'value': 75300003800},
+                {'date': '1966', 'value': 62999998500},
+                {'date': '1961', 'value': 24700000300},
+                {'date': '1960', 'value': 24200001500}]
+
     assert result == expected
+
+
+def test_should_fetch_proper_header(data_src):
+    example_time_series = "TEST.TIME.SERIES"
+    example_country = "CHN"
+
+    header, _ = data_src.fetch_data(example_country, example_time_series)
+    expected = 'test_data'
+
+    assert header == expected
